@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const mysql = require("mysql2");
 const bodyParser = require("body-parser");
@@ -20,12 +21,15 @@ const admin = require("firebase-admin");
 require("dotenv").config(); // For environment variables
 
 // Initialize Firebase Admin SDK
-const serviceAccount = require("./serviceAccountKey.json");
+// const serviceAccount = require("./serviceAccountKey.json");
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+  credential: admin.credential.cert({
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+  }),
 });
-
 // const app = express();
 const PORT = process.env.PORT || 3000;
 
